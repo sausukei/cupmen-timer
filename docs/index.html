@@ -1,34 +1,31 @@
 <!DOCTYPE html>
-<html lang="ja">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>カップ麺タイマー</title>
-    
-    <style>
-        h1{
-            font-size: 50px;
-            background-color: white;
-            text-align: center;
-        }
-        #timer{
-            display: flex;
-            flex-direction: row;
-            width:100%;
-            color: black;
-            text-align: center;
-            
-            
+    <title>Document</title>
+</head>
+<body>
+    <h1>超カップ麺タイマー！！</h1>
+    <div id ="cupmen">
+        <div id = "timer"></div>
+        <div id = "control"></div>
+    </div>
+    <div id="カップ麺"></div>
+</body>
+</html>
+<style>
+    
+   
+    .btn{
 
-        }
-        p{
-            font-size: 100px;
-            margin: 0;
-            background-color: white;
-            text-align: center;
-        }
-        #カップ麺
+        border-radius: 50px;
+        background: #e0e0e0;
+        box-shadow:  18px 18px 37px #bebebe,
+                    -18px -18px 37px #ffffff;
+
+    }
+    #カップ麺
         {
             height: 1000px;
             background-position: center;
@@ -36,68 +33,115 @@
             background-size: contain;
             background-image: url(https://cdn.bg-mania.jp/images/2019/08/tbm_20190822170749.jpg);
         }
-    </style>
-</head>
 
-<body>
-    <h1>カップ麺タイマー</h1>
-    <div id="timer">
-        <p id="min">2</p>
-        <p>:</p>
-        <p id="sec">00</p>
-    </div>
-    <div id="カップ麺"></div>
+</style>
 
+<script>
+    let cntstart;
+    let min=0;
+    let sec=0;
+    let tmp;
+    let onoff=1;
+    let intervalid;
+    let control = document.getElementById("control");
+    let timer = document.getElementById("timer");
+    let start_min;
+    let start_sec;
 
-    <script>
-        var element1 = document.getElementById('sec');
-        var limit1 = 60;
-        var element2 = document.getElementById('min');
-        var limit2 = 1;
-        var i = 0;
-        var timer=setInterval(function () {
+    let min_ele = document.createElement("h1");
+    min_ele.id = "min";
+    min_ele.textContent= min;
+    min_ele.style.display="inline"
+    
+    const space = document.createElement("h1");
+    space.id = "space";
+    space.textContent = ":";
+    space.style.display="inline"
+    
+    
+    let sec_ele = document.createElement("h1");
+    sec_ele.id = "sec"
+    sec_ele.textContent= "0"+sec;
+    sec_ele.style.display="inline"
+    
+    
+    let min_btn = document.createElement("button");
+    min_btn.id = "min_button";
+    min_btn.className="btn";
+    min_btn.textContent = "+1分";
+    min_btn.onclick = () =>{
+       min++;
+       tmp = document.getElementById("min");
+       tmp.textContent = min;
+    }
 
-            i++
-            limit1--;
-            element2.innerHTML = limit2;
-            element1.innerHTML = limit1;
+    let sec_btn = document.createElement("button");
+    sec_btn.id = "sec_button";
+    sec_btn.className="btn";
+    sec_btn.textContent = "+1秒"
+    sec_btn.onclick = () =>{
+       sec++;
+       tmp = document.getElementById("sec");
+       if(sec < 10){
+           tmp.textContent = "0" + sec;
+       }else{
+            tmp.textContent = sec;
+       }
+       
+    }
 
-            if(limit1<10)
-            {
-                element1.innerHTML = '0'+limit1;
-                
+    let start_btn = document.createElement("button");
+    start_btn.className="btn"
+    start_btn.textContent="Start";
+    start_btn.onclick = () =>{
+        if(onoff==1){
+            onoff = 0;
+            start_min = min;
+            start_sec = sec;
+            timerstart();
+        }
+    }
+
+    const timerstart = () =>{
+        cntstart = setInterval(count, 1000);
+    }
+
+    const count = () =>{
+        if(sec==0 && min==0){
+            clearInterval(cntstart);
+            alert("カップ麺できた");
+            min = start_min;
+            min_back.textContent = min;
+            sec = start_sec;
+            if(sec <10){
+            sec_back.textContent="0"+sec;
+            }else{
+            sec_back.textContent=sec;
             }
+            onoff = 1;
+            return;
+        }
+        if(sec == 0){
+            min--;
+            min_back.textContent=min;
+            sec=60;
+        }
 
-            if(limit1<=0)
-            {
-                limit1 = 59;
-                limit2--;
-            }
-            
-            if(limit2 < 1 && limit1 < 1)
-            {
-                {
-                clearInterval(timer);
-                alert("カップ麺ができました");
-                }
+        sec--;
+        if(sec <10){
+            sec_back.textContent="0"+sec;
+        }else{
+            sec_back.textContent=sec;
+        }
+        
+    }
 
-            }
-            if(limit1 == -1)
-            {
-                limit1=0;
-            }
-            if(limit2 < 0)
-            {
-                limit2 = 0;
-                limit1 = 0;
-            }
-
-            
-        }, 1000);
-
-
-
-    </script>
-</body>
-
-</html>
+    timer.appendChild(min_ele);
+    timer.appendChild(space);
+    timer.appendChild(sec_ele);
+    control.appendChild(min_btn);
+    control.appendChild(sec_btn);
+    control.appendChild(start_btn);
+    let min_back = document.getElementById("min");
+    let sec_back = document.getElementById("sec");
+</script>
