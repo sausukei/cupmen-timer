@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>カップ麺タイマー</title>
+    <title>Document</title>
 </head>
 <body>
     <h1>超カップ麺タイマー！！</h1>
     <div id ="cupmen">
         <div id = "timer"></div>
         <div id = "control"></div>
+        <div id = "-control"></div>
     </div>
     <div id="カップ麺"></div>
 </body>
@@ -17,14 +18,6 @@
 <style>
     
    
-    .btn{
-
-        border-radius: 50px;
-        background: #e0e0e0;
-        box-shadow:  18px 18px 37px #bebebe,
-                    -18px -18px 37px #ffffff;
-
-    }
     #カップ麺
         {
             height: 1000px;
@@ -43,6 +36,7 @@
     let tmp;
     let onoff=1;
     let intervalid;
+    let _control = document.getElementById("-control");
     let control = document.getElementById("control");
     let timer = document.getElementById("timer");
     let start_min;
@@ -102,6 +96,49 @@
         }
     }
 
+    let mimin_btn = document.createElement("button");
+    mimin_btn.id = "mimin_button";
+    mimin_btn.className="btn";
+    mimin_btn.textContent = "-1分";
+    mimin_btn.onclick = () =>{
+
+        if(min > 0){
+            min--;
+            tmp = document.getElementById("min");
+            tmp.textContent = min;
+        }
+       
+    }
+
+    let misec_btn = document.createElement("button");
+    misec_btn.id = "misec_button";
+    misec_btn.className="btn";
+    misec_btn.textContent = "-1秒"
+    misec_btn.onclick = () =>{
+
+        if(sec > 0){
+            sec--;
+            tmp = document.getElementById("sec");
+            if(sec < 10){
+                tmp.textContent = "0" + sec;
+            }else{
+                    tmp.textContent = sec;
+            }
+        }
+       
+       
+    }
+
+    let stop_btn = document.createElement("button");
+    stop_btn.className="btn"
+    stop_btn.textContent="Stop";
+    stop_btn.onclick = () =>{
+        if(onoff==0){
+            clearInterval(cntstart);
+            onoff = 1;
+        }
+    }
+
     const timerstart = () =>{
         cntstart = setInterval(count, 1000);
     }
@@ -142,6 +179,9 @@
     control.appendChild(min_btn);
     control.appendChild(sec_btn);
     control.appendChild(start_btn);
+    _control.appendChild(mimin_btn);
+    _control.appendChild(misec_btn);
+    _control.appendChild(stop_btn);
     let min_back = document.getElementById("min");
     let sec_back = document.getElementById("sec");
 </script>
